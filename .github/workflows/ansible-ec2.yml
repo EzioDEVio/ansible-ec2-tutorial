@@ -28,10 +28,15 @@ jobs:
           /usr/bin/python3 -m pip show boto3
           /usr/bin/python3 -m pip show botocore
 
-      # Ensures ansible-lint doesn't cause the workflow to fail but its output is still visible
-      - name: Run Ansible Lint
+      - name: Run Ansible Lint and save results
         continue-on-error: true
-        run: ansible-lint site.yml roles/
+        run: ansible-lint site.yml roles/ > ansible-lint-results.txt || true
+
+      - name: Upload Ansible Lint results
+        uses: actions/upload-artifact@v2
+        with:
+          name: ansible-lint-results
+          path: ansible-lint-results.txt
 
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
