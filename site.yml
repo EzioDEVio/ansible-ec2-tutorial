@@ -1,4 +1,6 @@
 ---
-- hosts: localhost
+- name: Setup EC2 instance using ec2-setup role
+  hosts: localhost
   roles:
     - role: ec2-setup
+
