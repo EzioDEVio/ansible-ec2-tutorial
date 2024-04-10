@@ -20,8 +20,13 @@ jobs:
 
       - name: Install Ansible, boto3, and botocore
         run: |
-          python -m pip install --upgrade pip
-          pip install ansible boto3 botocore
+          /usr/bin/python3 -m pip install --upgrade pip
+          /usr/bin/python3 -m pip install ansible boto3 botocore
+
+      - name: Check boto3 and botocore installation
+        run: |
+          /usr/bin/python3 -m pip show boto3
+          /usr/bin/python3 -m pip show botocore
 
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
@@ -32,6 +37,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
         run: |
           echo "$ANSIBLE_VAULT_PASSWORD" > vault-pass.txt
           ansible-playbook -i inventory/hosts.yml site.yml --vault-password-file vault-pass.txt
