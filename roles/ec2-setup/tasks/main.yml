@@ -1,6 +1,6 @@
 ---
 - name: Create a security group
-  amazon.aws.ec2_group:
+  amazon.aws.ec2_security_group:  # Updated module name
     name: "{{ ec2_security_group_name }}"
     description: Allow all inbound traffic
     vpc_id: "{{ ec2_vpc_id }}"
@@ -11,7 +11,7 @@
         cidr_ip: 0.0.0.0/0
 
 - name: Provision EC2 instances
-  amazon.aws.ec2_instance:
+  amazon.aws.ec2_instance:  # Confirmed correct module name
     key_name: "{{ ec2_keypair }}"
     instance_type: "{{ ec2_instance_type }}"
     image_id: "{{ ec2_ami }}"
@@ -22,5 +22,4 @@
     tags:
       Name: "Ansible Provisioned EC2"
     network:
-      assign_public_ip: yes
-
+      assign_public_ip: true  # Use `true` instead of `yes`

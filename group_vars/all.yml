@@ -4,6 +4,4 @@ ec2_instance_type: t2.micro
 ec2_ami: ami-051f8a213df8bc089
 ec2_region: us-east-1
 ec2_security_group_name: ansible-tutorial-sg
-ec2_vpc_id: vpc-02039cbbd71d33e59
-ec2_subnet_id: subnet-0dbae5309497667e1
 http_port: 80
