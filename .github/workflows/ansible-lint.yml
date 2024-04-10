@@ -26,7 +26,7 @@ jobs:
 
       - name: Run Ansible Lint
         run: |
-          ansible-lint site.yml roles/ > ansible-lint-results.txt 2>&1 || true
+          ansible-lint site.yml roles/ | tee ansible-lint-results.txt || true
           cat ansible-lint-results.txt
           
       - name: Debug Output
