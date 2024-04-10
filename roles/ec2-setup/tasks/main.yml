@@ -24,10 +24,9 @@
     network:
       assign_public_ip: true
     user_data: |
-    #!/bin/bash
-    echo "Welcome to the CI/CD Demo using Ansible" > /etc/motd
-    yum update -y
-    yum install -y httpd
-    systemctl start httpd
-    systemctl enable httpd
-
+      #!/bin/bash
+      echo "Welcome to the CI/CD Demo using Ansible" > /etc/motd
+      yum update -y
+      yum install -y httpd
+      systemctl start httpd
+      systemctl enable httpd
