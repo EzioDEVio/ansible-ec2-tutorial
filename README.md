@@ -1,4 +1,4 @@
-[![Provision EC2 with Ansible](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-ec2.yml/badge.svg)](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-ec2.yml)  
+[![Provision EC2 with Ansible](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-ec2.yml/badge.svg)](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-ec2.yml)  [![Ansible Lint](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/EzioDEVio/ansible-ec2-tutorial/actions/workflows/ansible-lint.yml)  
 
 # ansible-ec2-tutorial
 
