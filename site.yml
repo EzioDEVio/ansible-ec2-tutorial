@@ -3,4 +3,4 @@
   hosts: localhost
   roles:
     - role: ec2-setup
-
+    
