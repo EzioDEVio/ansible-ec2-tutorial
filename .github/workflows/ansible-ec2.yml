@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Ansible Lint and save results
         continue-on-error: true
-        run: ansible-lint site.yml roles/ > ansible-lint-results.txt || true
+        run: ansible-lint site.yml roles/ > ansible-lint-results.txt 2>&1 || true
 
       - name: Upload Ansible Lint results
         uses: actions/upload-artifact@v2
