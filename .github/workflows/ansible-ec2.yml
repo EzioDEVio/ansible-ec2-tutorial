@@ -1,6 +1,6 @@
 name: Provision EC2 with Ansible
 
-on:
+#on:
   push:
     branches: [ main ]
   pull_request:
