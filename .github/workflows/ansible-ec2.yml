@@ -1,4 +1,4 @@
-name: Provision EC2 with Ansible..
+name: Provision EC2 with Ansible and run Ansible Lint
 
 on:
   push:
@@ -18,10 +18,18 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Ansible and boto3
+      - name: Install Ansible, boto3, botocore, and Ansible Lint
         run: |
           python -m pip install --upgrade pip
-          pip install ansible boto3
+          pip install ansible boto3 botocore ansible-lint
+
+      - name: Check boto3 and botocore installation
+        run: |
+          python -m pip show boto3
+          python -m pip show botocore
+
+      - name: Run Ansible Lint
+        run: ansible-lint site.yml roles/ || true
 
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
@@ -32,11 +40,11 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
         run: |
           echo "$ANSIBLE_VAULT_PASSWORD" > vault-pass.txt
           ansible-playbook -i inventory/hosts.yml site.yml --vault-password-file vault-pass.txt
           rm vault-pass.txt
-
 
       - name: Output Ansible Playbook Result
         run: echo "${{ steps.ansible-playbook.outputs.stdout }}"
