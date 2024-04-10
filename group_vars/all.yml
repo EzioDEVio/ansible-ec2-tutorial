@@ -1,0 +1,9 @@
+---
+ec2_keypair: your-keypair-name
+ec2_instance_type: t2.micro
+ec2_ami: ami-xxxxxx
+ec2_region: us-east-1
+ec2_security_group_name: ansible-tutorial-sg
+ec2_vpc_id: vpc-xxxxxx
+ec2_subnet_id: subnet-xxxxxx
+http_port: 80
