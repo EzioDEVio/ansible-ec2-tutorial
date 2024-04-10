@@ -1,0 +1,25 @@
+---
+- name: Create a security group
+  ec2_group:
+    name: "{{ ec2_security_group_name }}"
+    description: Allow all inbound traffic
+    vpc_id: "{{ ec2_vpc_id }}"
+    rules:
+      - proto: tcp
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+
+- name: Provision EC2 instances
+  ec2:
+    key_name: "{{ ec2_keypair }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image: "{{ ec2_ami }}"
+    region: "{{ ec2_region }}"
+    vpc_subnet_id: "{{ ec2_subnet_id }}"
+    assign_public_ip: yes
+    count: 1
+    group: "{{ ec2_security_group_name }}"
+    tags:
+      Name: Ansible Provisioned EC2
+  register: ec2
