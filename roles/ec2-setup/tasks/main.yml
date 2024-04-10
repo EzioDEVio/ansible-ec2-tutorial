@@ -1,6 +1,6 @@
 ---
 - name: Create a security group
-  amazon.aws.ec2_security_group:  # Updated module name
+  amazon.aws.ec2_security_group:
     name: "{{ ec2_security_group_name }}"
     description: Allow all inbound traffic
     vpc_id: "{{ ec2_vpc_id }}"
@@ -11,7 +11,7 @@
         cidr_ip: 0.0.0.0/0
 
 - name: Provision EC2 instances
-  amazon.aws.ec2_instance:  # Confirmed correct module name
+  amazon.aws.ec2_instance:
     key_name: "{{ ec2_keypair }}"
     instance_type: "{{ ec2_instance_type }}"
     image_id: "{{ ec2_ami }}"
@@ -22,4 +22,12 @@
     tags:
       Name: "Ansible Provisioned EC2"
     network:
-      assign_public_ip: true  # Use `true` instead of `yes`
+      assign_public_ip: true
+    user_data: |
+    #!/bin/bash
+    echo "Welcome to the CI/CD Demo using Ansible" > /etc/motd
+    yum update -y
+    yum install -y httpd
+    systemctl start httpd
+    systemctl enable httpd
+
