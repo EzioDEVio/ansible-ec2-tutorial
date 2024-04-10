@@ -1,4 +1,4 @@
-name: Provision EC2 with Ansible
+name: Provision EC2 with Ansible..
 
 on:
   push:
@@ -18,19 +18,25 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Ansible
+      - name: Install Ansible and boto3
         run: |
           python -m pip install --upgrade pip
           pip install ansible boto3
+
+      - name: Install required Ansible collections
+        run: ansible-galaxy collection install amazon.aws community.aws
 
       - name: Run Ansible Playbook
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: 'us-east-1'
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
         run: |
-          ansible-playbook -i inventory/hosts.yml site.yml --ask-vault-pass
-        id: ansible-playbook
+          echo "$ANSIBLE_VAULT_PASSWORD" > vault-pass.txt
+          ansible-playbook -i inventory/hosts.yml site.yml --vault-password-file vault-pass.txt
+          rm vault-pass.txt
+
 
       - name: Output Ansible Playbook Result
         run: echo "${{ steps.ansible-playbook.outputs.stdout }}"
