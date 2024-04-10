@@ -1,6 +1,6 @@
-name: Provision EC2 with Ansible
+name: Provision EC2 with Ansible and run Ansible Lint
 
-#on:
+on:
   push:
     branches: [ main ]
   pull_request:
@@ -18,15 +18,15 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Ansible, boto3, and botocore
+      - name: Install Ansible, boto3, botocore, and Ansible Lint
         run: |
-          /usr/bin/python3 -m pip install --upgrade pip
-          /usr/bin/python3 -m pip install ansible boto3 botocore
+          python -m pip install --upgrade pip
+          python -m pip install ansible boto3 botocore ansible-lint
 
-      - name: Check boto3 and botocore installation
-        run: |
-          /usr/bin/python3 -m pip show boto3
-          /usr/bin/python3 -m pip show botocore
+      # Ensures ansible-lint doesn't cause the workflow to fail but its output is still visible
+      - name: Run Ansible Lint
+        continue-on-error: true
+        run: ansible-lint site.yml roles/
 
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
