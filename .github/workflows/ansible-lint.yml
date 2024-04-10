@@ -25,4 +25,6 @@ jobs:
         run: pip install ansible-lint
 
       - name: Run Ansible Lint
-        run: ansible-lint site.yml roles/ || true
+        run: |
+          ansible-lint site.yml roles/ > ansible-lint-results.txt || true
+          cat ansible-lint-results.txt
