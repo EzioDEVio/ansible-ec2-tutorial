@@ -1,0 +1,36 @@
+name: Provision EC2 with Ansible
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  provision-ec2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible boto3
+
+      - name: Run Ansible Playbook
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
+        run: |
+          ansible-playbook -i inventory/hosts.yml site.yml --ask-vault-pass
+        id: ansible-playbook
+
+      - name: Output Ansible Playbook Result
+        run: echo "${{ steps.ansible-playbook.outputs.stdout }}"
