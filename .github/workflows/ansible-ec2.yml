@@ -1,4 +1,4 @@
-name: Provision EC2 with Ansible
+name: Provision EC2 with Ansible and run Ansible lint
 
 on:
   push:
@@ -18,15 +18,13 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Ansible, boto3, and botocore
+      - name: Install Ansible, boto3, botocore, and Ansible Lint
         run: |
-          /usr/bin/python3 -m pip install --upgrade pip
-          /usr/bin/python3 -m pip install ansible boto3 botocore
+          python -m pip install --upgrade pip
+          pip install ansible boto3 botocore ansible-lint
 
-      - name: Check boto3 and botocore installation
-        run: |
-          /usr/bin/python3 -m pip show boto3
-          /usr/bin/python3 -m pip show botocore
+      - name: Run Ansible Lint
+        run: ansible-lint site.yml roles/
 
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
