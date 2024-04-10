@@ -28,3 +28,12 @@ jobs:
         run: |
           ansible-lint site.yml roles/ > ansible-lint-results.txt || true
           cat ansible-lint-results.txt
+          
+      - name: Debug Output
+        run: |
+          echo "Debug: Current directory"
+          pwd
+          echo "Debug: Contents of the current directory"
+          ls -al
+          echo "Debug: Contents of ansible-lint-results.txt"
+          cat ansible-lint-results.txt
