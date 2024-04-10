@@ -23,13 +23,16 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install ansible boto3 botocore ansible-lint
 
-
+      # This step will run ansible-lint but won't fail the workflow if issues are found
       - name: Run Ansible Lint
+        continue-on-error: true
         run: ansible-lint site.yml roles/ || true
 
+      # Install necessary Ansible collections
       - name: Install required Ansible collections
         run: ansible-galaxy collection install amazon.aws community.aws
 
+      # Execute the Ansible playbook with the vault password
       - name: Run Ansible Playbook
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -42,5 +45,6 @@ jobs:
           ansible-playbook -i inventory/hosts.yml site.yml --vault-password-file vault-pass.txt
           rm vault-pass.txt
 
+      # Output the result of the Ansible playbook execution
       - name: Output Ansible Playbook Result
         run: echo "${{ steps.ansible-playbook.outputs.stdout }}"
