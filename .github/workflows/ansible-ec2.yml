@@ -1,4 +1,4 @@
-name: Provision EC2 with Ansible
+name: Provision EC2 with Ansible..
 
 on:
   push:
