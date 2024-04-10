@@ -1,6 +1,6 @@
 name: Ansible Lint
 
-on:
+#on:
   push:
     branches:
       - main
