@@ -1,4 +1,8 @@
 ---
-- hosts: localhost
+- name: Setup EC2 instance using ec2-setup role
+  hosts: localhost
+  vars_files:
+    - secret.yml  # Ensures variables in secret.yml are available to tasks
   roles:
     - role: ec2-setup
+    

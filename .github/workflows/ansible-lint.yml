@@ -1,0 +1,39 @@
+name: Ansible Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Ansible Lint
+        run: pip install ansible-lint
+
+      - name: Run Ansible Lint
+        run: |
+          ansible-lint site.yml roles/ | tee ansible-lint-results.txt || true
+          cat ansible-lint-results.txt
+          
+      - name: Debug Output
+        run: |
+          echo "Debug: Current directory"
+          pwd
+          echo "Debug: Contents of the current directory"
+          ls -al
+          echo "Debug: Contents of ansible-lint-results.txt"
+          cat ansible-lint-results.txt

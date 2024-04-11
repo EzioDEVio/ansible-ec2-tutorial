@@ -1,6 +1,6 @@
 ---
 - name: Create a security group
-  ec2_group:
+  amazon.aws.ec2_security_group:
     name: "{{ ec2_security_group_name }}"
     description: Allow all inbound traffic
     vpc_id: "{{ ec2_vpc_id }}"
@@ -11,15 +11,67 @@
         cidr_ip: 0.0.0.0/0
 
 - name: Provision EC2 instances
-  ec2:
+  amazon.aws.ec2_instance:
     key_name: "{{ ec2_keypair }}"
     instance_type: "{{ ec2_instance_type }}"
-    image: "{{ ec2_ami }}"
+    image_id: "{{ ec2_ami }}"
     region: "{{ ec2_region }}"
     vpc_subnet_id: "{{ ec2_subnet_id }}"
-    assign_public_ip: yes
     count: 1
-    group: "{{ ec2_security_group_name }}"
+    security_group: "{{ ec2_security_group_name }}"
     tags:
-      Name: Ansible Provisioned EC2
-  register: ec2
+      Name: "Ansible Provisioned EC2"
+    network:
+      assign_public_ip: true
+    user_data: |
+      #!/bin/bash
+      yum update -y
+      yum install -y httpd
+      systemctl start httpd
+      systemctl enable httpd
+      cat <<EOF > /var/www/html/index.html
+      <html>
+        <head>
+          <title>Welcome</title>
+          <style>
+            body {
+              background-color: #f0f0f2;
+              margin: 0;
+              padding: 0;
+              font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            }
+            .container {
+              width: 80%;
+              margin: auto;
+              overflow: hidden;
+            }
+            header, footer {
+              background: #333;
+              color: #fff;
+              padding: 20px 0;
+              text-align: center;
+            }
+            .main-content {
+              text-align: center;
+              font-size: 24px;
+              margin-top: 50px;
+            }
+          </style>
+        </head>
+        <body>
+          <header>
+            <div class="container">
+              Welcome Header
+            </div>
+          </header>
+          <div class="main-content">
+            Welcome to the CI/CD Demo using Ansible
+          </div>
+          <footer>
+            <div class="container">
+              Footer Information
+            </div>
+          </footer>
+        </body>
+      </html>
+      EOF
