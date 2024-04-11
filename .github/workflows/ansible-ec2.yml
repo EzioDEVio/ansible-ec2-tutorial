@@ -1,4 +1,4 @@
-name: Provision EC2 with Ansible and run Ansible Lint
+name: Provision EC2 with Ansible and run Ansible Lint..
 
 on:
   push:
