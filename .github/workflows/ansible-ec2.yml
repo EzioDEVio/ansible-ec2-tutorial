@@ -1,6 +1,6 @@
 name: Provision EC2 with Ansible and run Ansible Lint..
 
-on:
+#on:
   push:
     branches: [ main ]
   pull_request:
